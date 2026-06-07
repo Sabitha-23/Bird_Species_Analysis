@@ -55,13 +55,66 @@ st.markdown("""
         color: #b7e4c7 !important;
         font-weight: bold;
     }
+
+    /* ── Dropdown box (closed state) ── */
     section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] {
-        background-color: #2d6a4f !important;
-        border: 1px solid #52b788 !important;
+        background-color: #ffffff !important;
+        border: 2px solid #52b788 !important;
         border-radius: 6px;
     }
-    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] * {
+
+    /* ── Selected value text in the box ── */
+    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] div[class*="ValueContainer"] *,
+    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] div[class*="singleValue"],
+    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] input {
+        color: #000000 !important;
+        background-color: #ffffff !important;
+    }
+
+    /* ── Dropdown arrow icon ── */
+    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] svg {
+        fill: #1b4332 !important;
+    }
+
+    /* ── Dropdown open list/menu ── */
+    div[data-baseweb="popover"] ul,
+    div[data-baseweb="popover"] [role="listbox"],
+    div[data-baseweb="menu"] {
+        background-color: #ffffff !important;
+        border: 2px solid #52b788 !important;
+        border-radius: 8px !important;
+    }
+
+    /* ── Dropdown option text ── */
+    div[data-baseweb="popover"] li,
+    div[data-baseweb="popover"] [role="option"],
+    div[data-baseweb="menu"] li {
+        color: #000000 !important;
+        background-color: #ffffff !important;
+        font-size: 14px !important;
+    }
+
+    /* ── Hovered option ── */
+    div[data-baseweb="popover"] li:hover,
+    div[data-baseweb="popover"] [role="option"]:hover,
+    div[data-baseweb="menu"] li:hover {
+        background-color: #d8f3dc !important;
+        color: #1b4332 !important;
+    }
+
+    /* ── Selected option in list ── */
+    div[data-baseweb="popover"] [aria-selected="true"],
+    div[data-baseweb="menu"] [aria-selected="true"] {
+        background-color: #52b788 !important;
         color: #ffffff !important;
+    }
+
+    /* ── Typing/search input inside dropdown ── */
+    div[data-baseweb="popover"] input,
+    div[data-baseweb="select"] input {
+        color: #000000 !important;
+        background-color: #ffffff !important;
+        caret-color: #1b4332 !important;
     }
 
     /* ── Metric cards ── */
