@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
@@ -15,59 +14,161 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────
-# GREEN NATURE THEME
+# THEME — Dark green backgrounds, white text everywhere
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-    /* Main background */
-    .stApp { background-color: #f0f7f0; }
+    /* ── App background ── */
+    .stApp { background-color: #1b4332; }
 
-    /* Sidebar */
+    /* ── Main content area ── */
+    .main .block-container {
+        background-color: #1b4332;
+        padding-top: 20px;
+    }
+
+    /* ── ALL text white ── */
+    html, body, [class*="css"], p, span, div, label,
+    .stMarkdown, .stText {
+        color: #ffffff !important;
+    }
+
+    /* ── Sidebar ── */
     section[data-testid="stSidebar"] {
-        background-color: #1b4332 !important;
+        background-color: #0d2b1f !important;
+        border-right: 2px solid #52b788;
     }
     section[data-testid="stSidebar"] * {
-        color: white !important;
+        color: #ffffff !important;
     }
-    section[data-testid="stSidebar"] .stRadio label {
-        color: white !important;
+    section[data-testid="stSidebar"] .stRadio > label {
+        color: #b7e4c7 !important;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label {
+        color: #ffffff !important;
+        font-size: 15px;
+        padding: 4px 0;
+    }
+    section[data-testid="stSidebar"] .stSelectbox label {
+        color: #b7e4c7 !important;
+        font-weight: bold;
+    }
+    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] {
+        background-color: #2d6a4f !important;
+        border: 1px solid #52b788 !important;
+        border-radius: 6px;
+    }
+    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] * {
+        color: #ffffff !important;
     }
 
-    /* Metric cards */
+    /* ── Metric cards ── */
     div[data-testid="metric-container"] {
-        background-color: #d8f3dc;
-        border: 1px solid #74c69d;
-        border-radius: 10px;
-        padding: 15px;
+        background-color: #2d6a4f !important;
+        border: 2px solid #52b788 !important;
+        border-radius: 12px !important;
+        padding: 18px !important;
     }
     div[data-testid="metric-container"] label {
-        color: #1b4332 !important;
+        color: #b7e4c7 !important;
+        font-size: 13px !important;
+        font-weight: bold !important;
+    }
+    div[data-testid="metric-container"] div[data-testid="stMetricValue"] {
+        color: #ffffff !important;
+        font-size: 28px !important;
+        font-weight: bold !important;
+    }
+    div[data-testid="metric-container"] div[data-testid="stMetricDelta"] {
+        color: #95d5b2 !important;
     }
 
-    /* Headers */
-    h1, h2, h3 { color: #1b4332 !important; }
+    /* ── Headers ── */
+    h1, h2, h3, h4, h5, h6 {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
 
-    /* Divider */
-    hr { border-color: #74c69d; }
-
-    /* Dataframe */
-    .stDataFrame { border: 1px solid #74c69d; border-radius: 8px; }
-
-    /* Selectbox label */
-    .stSelectbox > label { color: #1b4332 !important; font-weight: bold; }
-    .stMultiSelect > label { color: #1b4332 !important; font-weight: bold; }
-    .stSlider > label { color: #1b4332 !important; font-weight: bold; }
-
-    /* Success/info boxes */
-    .stAlert { border-radius: 8px; }
-
-    /* Page title styling */
+    /* ── Page title banner ── */
     .page-title {
-        background: linear-gradient(135deg, #1b4332, #2d6a4f);
-        color: white !important;
-        padding: 20px 25px;
+        background: linear-gradient(135deg, #0d2b1f, #2d6a4f);
+        border: 2px solid #52b788;
         border-radius: 12px;
-        margin-bottom: 20px;
+        padding: 22px 28px;
+        margin-bottom: 25px;
+    }
+    .page-title h1 {
+        color: #ffffff !important;
+        margin: 0 !important;
+        font-size: 28px !important;
+    }
+    .page-title p {
+        color: #95d5b2 !important;
+        margin: 6px 0 0 0 !important;
+        font-size: 15px !important;
+    }
+
+    /* ── Section headers ── */
+    .section-header {
+        background-color: #2d6a4f;
+        border-left: 5px solid #95d5b2;
+        border-radius: 6px;
+        padding: 10px 16px;
+        margin: 20px 0 12px 0;
+        color: #ffffff !important;
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    /* ── Divider ── */
+    hr { border-color: #52b788 !important; }
+
+    /* ── Slider ── */
+    .stSlider label { color: #b7e4c7 !important; font-weight: bold !important; }
+    .stSlider .st-emotion-cache-1xw8zd0 { color: #ffffff !important; }
+
+    /* ── Expander ── */
+    .streamlit-expanderHeader {
+        background-color: #2d6a4f !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+        font-weight: bold !important;
+    }
+    .streamlit-expanderContent {
+        background-color: #1b4332 !important;
+        border: 1px solid #52b788 !important;
+    }
+
+    /* ── Dataframe ── */
+    .stDataFrame {
+        border: 2px solid #52b788 !important;
+        border-radius: 8px !important;
+    }
+    .stDataFrame th {
+        background-color: #2d6a4f !important;
+        color: #ffffff !important;
+    }
+    .stDataFrame td {
+        color: #ffffff !important;
+        background-color: #1b4332 !important;
+    }
+
+    /* ── Warning / info alerts ── */
+    .stAlert {
+        border-radius: 8px !important;
+        background-color: #2d6a4f !important;
+        color: #ffffff !important;
+    }
+
+    /* ── Tabs (if used) ── */
+    .stTabs [data-baseweb="tab"] {
+        color: #b7e4c7 !important;
+    }
+    .stTabs [data-baseweb="tab"][aria-selected="true"] {
+        color: #ffffff !important;
+        border-bottom: 3px solid #52b788 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -75,27 +176,50 @@ st.markdown("""
 # ─────────────────────────────────────────────────────────────
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────
-COLORS = {
-    "Forest"    : "#2d6a4f",
-    "Grassland" : "#d4a017",
-}
-COLOR_SEQ  = ["#1b4332","#2d6a4f","#40916c","#52b788",
-               "#74c69d","#95d5b2","#b7e4c7","#d8f3dc"]
-MONTH_MAP  = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",
-               7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
+COLORS    = {"Forest": "#52b788", "Grassland": "#f4a261"}
+COLOR_SEQ = ["#52b788","#40916c","#2d6a4f","#74c69d",
+             "#f4a261","#e76f51","#95d5b2","#b7e4c7"]
+MONTH_MAP = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",
+             7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
+
 LAYOUT_CFG = dict(
-    plot_bgcolor="#f0f7f0",
-    paper_bgcolor="#f0f7f0",
-    title_font_color="#1b4332",
-    title_font_size=15,
-    legend_title_font_color="#1b4332",
-    font_color="#2c2c2c",
-    margin=dict(t=50, b=30, l=20, r=20)
+    plot_bgcolor="#2d6a4f",
+    paper_bgcolor="#1b4332",
+    font_color="#ffffff",
+    title_font_color="#ffffff",
+    title_font_size=16,
+    legend_bgcolor="#2d6a4f",
+    legend_bordercolor="#52b788",
+    legend_borderwidth=1,
+    legend_font_color="#ffffff",
+    coloraxis_colorbar_tickfont_color="#ffffff",
+    coloraxis_colorbar_title_font_color="#ffffff",
+    margin=dict(t=55, b=35, l=20, r=20),
+    xaxis=dict(
+        gridcolor="#40916c",
+        linecolor="#52b788",
+        tickfont_color="#ffffff",
+        title_font_color="#ffffff",
+        zerolinecolor="#40916c"
+    ),
+    yaxis=dict(
+        gridcolor="#40916c",
+        linecolor="#52b788",
+        tickfont_color="#ffffff",
+        title_font_color="#ffffff",
+        zerolinecolor="#40916c"
+    )
 )
 
-def apply_layout(fig):
+def show(fig):
+    """Apply dark theme layout and render chart."""
     fig.update_layout(**LAYOUT_CFG)
-    return fig
+    # Fix colorbar text for continuous color scales
+    fig.update_coloraxes(
+        colorbar_tickfont_color="#ffffff",
+        colorbar_title_font_color="#ffffff"
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
 # ─────────────────────────────────────────────────────────────
 # LOAD DATA
@@ -114,7 +238,6 @@ def load_data():
 
 try:
     df = load_data()
-    data_loaded = True
 except Exception as e:
     st.error(f"❌ Could not load data: {e}")
     st.stop()
@@ -124,11 +247,12 @@ except Exception as e:
 # ─────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("## 🦅 Bird Species Analysis")
-    st.markdown("*US National Parks*")
+    st.markdown("**US National Parks**")
+    st.markdown("*Forest & Grassland Habitats*")
     st.markdown("---")
 
     page = st.radio(
-        "📌 Navigate to",
+        "📌 Navigate",
         [
             "🏠 Overview",
             "📅 Temporal Analysis",
@@ -152,9 +276,8 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown(
-        "<small>📊 Data: US National Parks Bird Monitoring<br>"
-        "🔗 github.com/Sabitha-23/Bird_Species_Analysis</small>",
-        unsafe_allow_html=True
+        "📊 **Data:** US National Parks  \n"
+        "🔗 [GitHub Repo](https://github.com/Sabitha-23/Bird_Species_Analysis)"
     )
 
 # ─────────────────────────────────────────────────────────────
@@ -169,7 +292,7 @@ if sel_season != "All":
     filtered = filtered[filtered["Season"] == sel_season]
 
 if len(filtered) == 0:
-    st.warning("⚠️ No data matches the selected filters. Please adjust your filters.")
+    st.warning("⚠️ No data matches the selected filters. Please adjust.")
     st.stop()
 
 # ═════════════════════════════════════════════════════════════
@@ -179,14 +302,12 @@ if page == "🏠 Overview":
 
     st.markdown("""
     <div class="page-title">
-        <h1 style="color:white!important;margin:0">🦅 Bird Species Observation Analysis</h1>
-        <p style="color:#b7e4c7;margin:5px 0 0 0">
-            US National Parks — Forest & Grassland Habitats
-        </p>
+        <h1>🦅 Bird Species Observation Analysis</h1>
+        <p>US National Parks — Forest & Grassland Habitats</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── KPI Metrics ──────────────────────────────────────────
+    # KPIs
     c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("📋 Total Observations",  f"{len(filtered):,}")
     c2.metric("🐦 Unique Species",       f"{filtered['Scientific_Name'].nunique():,}")
@@ -196,9 +317,7 @@ if page == "🏠 Overview":
 
     st.markdown("---")
 
-    # ── Row 1 ─────────────────────────────────────────────────
     col1, col2 = st.columns(2)
-
     with col1:
         park_counts = filtered.groupby(
             ["Admin_Unit_Code","Habitat"]).size().reset_index(name="Count")
@@ -207,23 +326,20 @@ if page == "🏠 Overview":
             barmode="group",
             title="Observations by National Park",
             labels={"Admin_Unit_Code":"Park","Count":"Observations"},
-            color_discrete_map=COLORS, template="plotly_white"
+            color_discrete_map=COLORS, template="plotly_dark"
         )
-        st.plotly_chart(apply_layout(fig), use_container_width=True)
+        show(fig)
 
     with col2:
         hab_counts = filtered.groupby("Habitat").size().reset_index(name="Count")
         fig2 = px.pie(
             hab_counts, names="Habitat", values="Count",
             title="Habitat Distribution",
-            color_discrete_map=COLORS, template="plotly_white",
-            hole=0.4
+            color_discrete_map=COLORS, template="plotly_dark", hole=0.45
         )
-        st.plotly_chart(apply_layout(fig2), use_container_width=True)
+        show(fig2)
 
-    # ── Row 2 ─────────────────────────────────────────────────
     col3, col4 = st.columns(2)
-
     with col3:
         if "Location_Type" in filtered.columns:
             loc = filtered.groupby(
@@ -231,9 +347,9 @@ if page == "🏠 Overview":
             fig3 = px.bar(
                 loc, x="Location_Type", y="Count", color="Habitat",
                 barmode="group", title="Observations by Location Type",
-                color_discrete_map=COLORS, template="plotly_white"
+                color_discrete_map=COLORS, template="plotly_dark"
             )
-            st.plotly_chart(apply_layout(fig3), use_container_width=True)
+            show(fig3)
 
     with col4:
         yearly = filtered.groupby(
@@ -241,11 +357,10 @@ if page == "🏠 Overview":
         fig4 = px.line(
             yearly, x="Year", y="Count", color="Habitat", markers=True,
             title="Observations Over the Years",
-            color_discrete_map=COLORS, template="plotly_white"
+            color_discrete_map=COLORS, template="plotly_dark"
         )
-        st.plotly_chart(apply_layout(fig4), use_container_width=True)
+        show(fig4)
 
-    # ── Raw data preview ──────────────────────────────────────
     with st.expander("📋 Preview Raw Data"):
         st.dataframe(filtered.head(50), use_container_width=True)
         st.caption(f"Showing 50 of {len(filtered):,} rows")
@@ -257,39 +372,35 @@ elif page == "📅 Temporal Analysis":
 
     st.markdown("""
     <div class="page-title">
-        <h1 style="color:white!important;margin:0">📅 Temporal Analysis</h1>
-        <p style="color:#b7e4c7;margin:5px 0 0 0">
-            Monthly, Seasonal & Yearly Observation Trends
-        </p>
+        <h1>📅 Temporal Analysis</h1>
+        <p>Monthly, Seasonal & Yearly Observation Trends</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # Monthly
     monthly = filtered.groupby(
         ["Month","Habitat"]).size().reset_index(name="Count")
     fig = px.line(
         monthly, x="Month", y="Count", color="Habitat", markers=True,
         title="Monthly Observation Trends",
-        color_discrete_map=COLORS, template="plotly_white"
+        color_discrete_map=COLORS, template="plotly_dark"
     )
     fig.update_xaxes(
         tickvals=list(MONTH_MAP.keys()),
         ticktext=list(MONTH_MAP.values())
     )
-    st.plotly_chart(apply_layout(fig), use_container_width=True)
+    show(fig)
 
     col1, col2 = st.columns(2)
-
     with col1:
         seasonal = filtered.groupby(
             ["Season","Habitat"]).size().reset_index(name="Count")
         fig2 = px.bar(
             seasonal, x="Season", y="Count", color="Habitat",
             barmode="group", title="Seasonal Trends",
-            color_discrete_map=COLORS, template="plotly_white",
+            color_discrete_map=COLORS, template="plotly_dark",
             category_orders={"Season":["Spring","Summer","Fall","Winter"]}
         )
-        st.plotly_chart(apply_layout(fig2), use_container_width=True)
+        show(fig2)
 
     with col2:
         yearly = filtered.groupby(
@@ -297,12 +408,12 @@ elif page == "📅 Temporal Analysis":
         fig3 = px.bar(
             yearly, x="Year", y="Count", color="Habitat",
             barmode="group", title="Yearly Trends",
-            color_discrete_map=COLORS, template="plotly_white"
+            color_discrete_map=COLORS, template="plotly_dark"
         )
-        st.plotly_chart(apply_layout(fig3), use_container_width=True)
+        show(fig3)
 
-    # Heatmap
-    st.markdown("### 🗓️ Observation Heatmap — Park × Month")
+    st.markdown('<div class="section-header">🗓️ Observation Heatmap — Park × Month</div>',
+                unsafe_allow_html=True)
     hm_data = filtered.groupby(
         ["Admin_Unit_Code","Month"]).size().reset_index(name="Count")
     hm_pivot = hm_data.pivot(
@@ -312,9 +423,10 @@ elif page == "📅 Temporal Analysis":
     fig4 = px.imshow(
         hm_pivot, color_continuous_scale="Greens",
         title="Observation Heatmap (Park × Month)",
-        template="plotly_white", text_auto=True
+        template="plotly_dark", text_auto=True
     )
-    st.plotly_chart(apply_layout(fig4), use_container_width=True)
+    fig4.update_traces(textfont_color="#ffffff")
+    show(fig4)
 
 # ═════════════════════════════════════════════════════════════
 # PAGE 3 — SPECIES ANALYSIS
@@ -323,15 +435,12 @@ elif page == "🐦 Species Analysis":
 
     st.markdown("""
     <div class="page-title">
-        <h1 style="color:white!important;margin:0">🐦 Species Analysis</h1>
-        <p style="color:#b7e4c7;margin:5px 0 0 0">
-            Species Diversity, Distribution & Identification
-        </p>
+        <h1>🐦 Species Analysis</h1>
+        <p>Species Diversity, Distribution & Identification</p>
     </div>
     """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
-
     with col1:
         top_n = st.slider("Show Top N Species", 5, 30, 15)
         top_sp = filtered["Common_Name"].value_counts().head(top_n).reset_index()
@@ -340,10 +449,10 @@ elif page == "🐦 Species Analysis":
             top_sp, x="Count", y="Species", orientation="h",
             title=f"Top {top_n} Most Observed Species",
             color="Count", color_continuous_scale="Greens",
-            template="plotly_white"
+            template="plotly_dark"
         )
         fig.update_layout(yaxis=dict(autorange="reversed"))
-        st.plotly_chart(apply_layout(fig), use_container_width=True)
+        show(fig)
 
     with col2:
         sp_hab = filtered.groupby(
@@ -352,21 +461,20 @@ elif page == "🐦 Species Analysis":
         fig2 = px.pie(
             sp_hab, names="Habitat", values="Unique_Species",
             title="Species Diversity by Habitat",
-            color_discrete_map=COLORS, template="plotly_white", hole=0.4
+            color_discrete_map=COLORS, template="plotly_dark", hole=0.45
         )
-        st.plotly_chart(apply_layout(fig2), use_container_width=True)
+        show(fig2)
 
     col3, col4 = st.columns(2)
-
     with col3:
         sex = filtered.groupby(
             ["Sex","Habitat"]).size().reset_index(name="Count")
         fig3 = px.bar(
             sex, x="Sex", y="Count", color="Habitat", barmode="group",
             title="Sex Distribution of Observed Birds",
-            color_discrete_map=COLORS, template="plotly_white"
+            color_discrete_map=COLORS, template="plotly_dark"
         )
-        st.plotly_chart(apply_layout(fig3), use_container_width=True)
+        show(fig3)
 
     with col4:
         if "ID_Method" in filtered.columns:
@@ -375,23 +483,22 @@ elif page == "🐦 Species Analysis":
             fig4 = px.bar(
                 id_m, x="ID_Method", y="Count", color="Habitat",
                 barmode="group", title="Identification Methods",
-                color_discrete_map=COLORS, template="plotly_white"
+                color_discrete_map=COLORS, template="plotly_dark"
             )
-            st.plotly_chart(apply_layout(fig4), use_container_width=True)
+            show(fig4)
 
-    # Species per park
-    st.markdown("### 🏞️ Unique Species per National Park")
+    st.markdown('<div class="section-header">🏞️ Unique Species per National Park</div>',
+                unsafe_allow_html=True)
     sp_park = filtered.groupby(
         ["Admin_Unit_Code","Habitat"])["Scientific_Name"].nunique().reset_index()
     sp_park.columns = ["Park","Habitat","Unique_Species"]
     fig5 = px.bar(
         sp_park, x="Park", y="Unique_Species", color="Habitat",
         barmode="group", title="Unique Species per National Park",
-        color_discrete_map=COLORS, template="plotly_white"
+        color_discrete_map=COLORS, template="plotly_dark"
     )
-    st.plotly_chart(apply_layout(fig5), use_container_width=True)
+    show(fig5)
 
-    # Flyover
     if "Flyover_Observed" in filtered.columns:
         col5, col6 = st.columns(2)
         with col5:
@@ -400,10 +507,10 @@ elif page == "🐦 Species Analysis":
             fig6 = px.pie(
                 fly, names="Flyover", values="Count",
                 title="✈️ Flyover vs Stationary",
-                color_discrete_sequence=["#2d6a4f","#d4a017"],
-                template="plotly_white", hole=0.4
+                color_discrete_sequence=["#52b788","#f4a261"],
+                template="plotly_dark", hole=0.45
             )
-            st.plotly_chart(apply_layout(fig6), use_container_width=True)
+            show(fig6)
 
 # ═════════════════════════════════════════════════════════════
 # PAGE 4 — ENVIRONMENT ANALYSIS
@@ -412,24 +519,21 @@ elif page == "🌤️ Environment Analysis":
 
     st.markdown("""
     <div class="page-title">
-        <h1 style="color:white!important;margin:0">🌤️ Environment Analysis</h1>
-        <p style="color:#b7e4c7;margin:5px 0 0 0">
-            Temperature, Sky, Wind & Disturbance Conditions
-        </p>
+        <h1>🌤️ Environment Analysis</h1>
+        <p>Temperature, Sky, Wind & Disturbance Conditions</p>
     </div>
     """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
-
     with col1:
         if "Temperature_F" in filtered.columns:
             fig = px.histogram(
                 filtered, x="Temperature_F", color="Habitat", nbins=30,
                 title="🌡️ Temperature Distribution (°F)",
-                color_discrete_map=COLORS, template="plotly_white",
-                barmode="overlay", opacity=0.7
+                color_discrete_map=COLORS, template="plotly_dark",
+                barmode="overlay", opacity=0.75
             )
-            st.plotly_chart(apply_layout(fig), use_container_width=True)
+            show(fig)
 
     with col2:
         sky = filtered.groupby(
@@ -437,21 +541,20 @@ elif page == "🌤️ Environment Analysis":
         fig2 = px.bar(
             sky, x="Sky", y="Count", color="Habitat", barmode="group",
             title="☁️ Sky Conditions",
-            color_discrete_map=COLORS, template="plotly_white"
+            color_discrete_map=COLORS, template="plotly_dark"
         )
-        st.plotly_chart(apply_layout(fig2), use_container_width=True)
+        show(fig2)
 
     col3, col4 = st.columns(2)
-
     with col3:
         wind = filtered.groupby(
             ["Wind","Habitat"]).size().reset_index(name="Count")
         fig3 = px.bar(
             wind, x="Wind", y="Count", color="Habitat", barmode="group",
             title="💨 Wind Conditions",
-            color_discrete_map=COLORS, template="plotly_white"
+            color_discrete_map=COLORS, template="plotly_dark"
         )
-        st.plotly_chart(apply_layout(fig3), use_container_width=True)
+        show(fig3)
 
     with col4:
         if "Disturbance" in filtered.columns:
@@ -460,20 +563,20 @@ elif page == "🌤️ Environment Analysis":
             fig4 = px.bar(
                 dist, x="Disturbance", y="Count", color="Habitat",
                 barmode="group", title="⚠️ Disturbance Levels",
-                color_discrete_map=COLORS, template="plotly_white"
+                color_discrete_map=COLORS, template="plotly_dark"
             )
-            st.plotly_chart(apply_layout(fig4), use_container_width=True)
+            show(fig4)
 
-    # Temperature vs Season
     if "Temperature_F" in filtered.columns:
-        st.markdown("### 🌡️ Temperature by Season & Habitat")
+        st.markdown('<div class="section-header">🌡️ Temperature by Season & Habitat</div>',
+                    unsafe_allow_html=True)
         fig5 = px.box(
             filtered, x="Season", y="Temperature_F", color="Habitat",
             title="Temperature Distribution by Season",
-            color_discrete_map=COLORS, template="plotly_white",
+            color_discrete_map=COLORS, template="plotly_dark",
             category_orders={"Season":["Spring","Summer","Fall","Winter"]}
         )
-        st.plotly_chart(apply_layout(fig5), use_container_width=True)
+        show(fig5)
 
 # ═════════════════════════════════════════════════════════════
 # PAGE 5 — CONSERVATION
@@ -482,10 +585,8 @@ elif page == "🚨 Conservation":
 
     st.markdown("""
     <div class="page-title">
-        <h1 style="color:white!important;margin:0">🚨 Conservation & Watchlist</h1>
-        <p style="color:#b7e4c7;margin:5px 0 0 0">
-            Partners in Flight (PIF) Watchlist Species Analysis
-        </p>
+        <h1>🚨 Conservation & Watchlist</h1>
+        <p>Partners in Flight (PIF) Watchlist Species Analysis</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -493,20 +594,18 @@ elif page == "🚨 Conservation":
         watchlist = filtered[filtered["PIF_Watchlist_Status"] == True]
 
         if len(watchlist) == 0:
-            st.warning("⚠️ No watchlist species found with the current filters.")
+            st.warning("⚠️ No watchlist species found with current filters.")
         else:
-            # KPIs
             c1, c2, c3 = st.columns(3)
             c1.metric("🚨 Watchlist Observations", f"{len(watchlist):,}")
             c2.metric("🐦 Watchlist Species",
                       f"{watchlist['Scientific_Name'].nunique()}")
-            c3.metric("📊 % of Total Observations",
+            c3.metric("📊 % of Total",
                       f"{len(watchlist)/len(filtered)*100:.1f}%")
 
             st.markdown("---")
 
             col1, col2 = st.columns(2)
-
             with col1:
                 top_w = watchlist["Common_Name"].value_counts().head(10).reset_index()
                 top_w.columns = ["Species","Count"]
@@ -514,56 +613,56 @@ elif page == "🚨 Conservation":
                     top_w, x="Count", y="Species", orientation="h",
                     title="Top 10 Watchlist Species",
                     color="Count", color_continuous_scale="Reds",
-                    template="plotly_white"
+                    template="plotly_dark"
                 )
                 fig.update_layout(yaxis=dict(autorange="reversed"))
-                st.plotly_chart(apply_layout(fig), use_container_width=True)
+                show(fig)
 
             with col2:
-                w_hab = watchlist.groupby("Habitat").size().reset_index(name="Count")
+                w_hab = watchlist.groupby(
+                    "Habitat").size().reset_index(name="Count")
                 fig2 = px.pie(
                     w_hab, names="Habitat", values="Count",
                     title="Watchlist by Habitat",
-                    color_discrete_map=COLORS, template="plotly_white", hole=0.4
+                    color_discrete_map=COLORS,
+                    template="plotly_dark", hole=0.45
                 )
-                st.plotly_chart(apply_layout(fig2), use_container_width=True)
+                show(fig2)
 
-            # Watchlist by park
             w_park = watchlist.groupby(
                 "Admin_Unit_Code").size().reset_index(name="Count")
             fig3 = px.bar(
                 w_park, x="Admin_Unit_Code", y="Count",
                 title="🏞️ Watchlist Observations by National Park",
                 color="Count", color_continuous_scale="Reds",
-                template="plotly_white"
+                template="plotly_dark"
             )
-            st.plotly_chart(apply_layout(fig3), use_container_width=True)
+            show(fig3)
 
             col3, col4 = st.columns(2)
-
             with col3:
                 w_season = watchlist.groupby(
                     ["Season","Habitat"]).size().reset_index(name="Count")
                 fig4 = px.bar(
                     w_season, x="Season", y="Count", color="Habitat",
                     barmode="group", title="Watchlist by Season",
-                    color_discrete_map=COLORS, template="plotly_white",
+                    color_discrete_map=COLORS, template="plotly_dark",
                     category_orders={"Season":["Spring","Summer","Fall","Winter"]}
                 )
-                st.plotly_chart(apply_layout(fig4), use_container_width=True)
+                show(fig4)
 
             with col4:
                 w_year = watchlist.groupby(
                     ["Year","Habitat"]).size().reset_index(name="Count")
                 fig5 = px.line(
-                    w_year, x="Year", y="Count", color="Habitat", markers=True,
-                    title="Watchlist Trend Over Years",
-                    color_discrete_map=COLORS, template="plotly_white"
+                    w_year, x="Year", y="Count", color="Habitat",
+                    markers=True, title="Watchlist Trend Over Years",
+                    color_discrete_map=COLORS, template="plotly_dark"
                 )
-                st.plotly_chart(apply_layout(fig5), use_container_width=True)
+                show(fig5)
 
-            # Watchlist species table
-            st.markdown("### 📋 Watchlist Species Detail")
+            st.markdown('<div class="section-header">📋 Watchlist Species Detail</div>',
+                        unsafe_allow_html=True)
             cols_show = ["Common_Name","Scientific_Name",
                          "Admin_Unit_Code","Habitat","Season","Date"]
             cols_show = [c for c in cols_show if c in watchlist.columns]
