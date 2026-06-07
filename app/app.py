@@ -56,65 +56,92 @@ st.markdown("""
         font-weight: bold;
     }
 
-    /* ── Dropdown box (closed state) ── */
-    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] {
+    /* ── Dropdown box (closed state) — white bg, black text ── */
+    div[data-baseweb="select"],
+    div[data-baseweb="select"] > div,
+    div[data-baseweb="select"] > div > div {
         background-color: #ffffff !important;
-        border: 2px solid #52b788 !important;
-        border-radius: 6px;
+        color: #000000 !important;
+        border-color: #52b788 !important;
     }
 
-    /* ── Selected value text in the box ── */
-    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] div[class*="ValueContainer"] *,
-    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] div[class*="singleValue"],
-    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] input {
+    /* ── All text inside the select box ── */
+    div[data-baseweb="select"] span,
+    div[data-baseweb="select"] div,
+    div[data-baseweb="select"] p {
         color: #000000 !important;
         background-color: #ffffff !important;
     }
 
-    /* ── Dropdown arrow icon ── */
-    section[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] svg {
-        fill: #1b4332 !important;
+    /* ── Typing / search input ── */
+    div[data-baseweb="select"] input,
+    div[data-baseweb="select"] input::placeholder {
+        color: #000000 !important;
+        background-color: #ffffff !important;
+        caret-color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
     }
 
-    /* ── Dropdown open list/menu ── */
-    div[data-baseweb="popover"] ul,
-    div[data-baseweb="popover"] [role="listbox"],
-    div[data-baseweb="menu"] {
+    /* ── Dropdown arrow ── */
+    div[data-baseweb="select"] svg {
+        fill: #1b4332 !important;
+        color: #1b4332 !important;
+    }
+
+    /* ── Open dropdown menu container ── */
+    div[data-baseweb="popover"],
+    div[data-baseweb="popover"] > div,
+    div[data-baseweb="menu"],
+    div[data-baseweb="menu"] > div,
+    ul[data-baseweb="menu-list"],
+    div[role="listbox"] {
         background-color: #ffffff !important;
+        color: #000000 !important;
         border: 2px solid #52b788 !important;
         border-radius: 8px !important;
     }
 
-    /* ── Dropdown option text ── */
-    div[data-baseweb="popover"] li,
-    div[data-baseweb="popover"] [role="option"],
-    div[data-baseweb="menu"] li {
-        color: #000000 !important;
+    /* ── Each option item ── */
+    li[role="option"],
+    div[role="option"],
+    div[data-baseweb="menu"] li,
+    div[data-baseweb="popover"] li {
         background-color: #ffffff !important;
+        color: #000000 !important;
         font-size: 14px !important;
     }
 
+    /* ── All text inside options ── */
+    li[role="option"] *,
+    div[role="option"] *,
+    div[data-baseweb="menu"] li *,
+    div[data-baseweb="popover"] li * {
+        color: #000000 !important;
+        background-color: transparent !important;
+    }
+
     /* ── Hovered option ── */
-    div[data-baseweb="popover"] li:hover,
-    div[data-baseweb="popover"] [role="option"]:hover,
-    div[data-baseweb="menu"] li:hover {
+    li[role="option"]:hover,
+    div[role="option"]:hover,
+    div[data-baseweb="menu"] li:hover,
+    div[data-baseweb="popover"] li:hover {
         background-color: #d8f3dc !important;
         color: #1b4332 !important;
     }
+    li[role="option"]:hover *,
+    div[role="option"]:hover * {
+        color: #1b4332 !important;
+    }
 
-    /* ── Selected option in list ── */
-    div[data-baseweb="popover"] [aria-selected="true"],
-    div[data-baseweb="menu"] [aria-selected="true"] {
+    /* ── Selected option ── */
+    li[aria-selected="true"],
+    div[aria-selected="true"] {
         background-color: #52b788 !important;
         color: #ffffff !important;
     }
-
-    /* ── Typing/search input inside dropdown ── */
-    div[data-baseweb="popover"] input,
-    div[data-baseweb="select"] input {
-        color: #000000 !important;
-        background-color: #ffffff !important;
-        caret-color: #1b4332 !important;
+    li[aria-selected="true"] *,
+    div[aria-selected="true"] * {
+        color: #ffffff !important;
     }
 
     /* ── Metric cards ── */
